@@ -108,7 +108,8 @@ async function getTerm(storeId) {
             'Content-Type': 'application/json',
             'User-Agent': 'Mozilla/5.0',
         },
-    })
+    });
+
     const ret = await str.json();  
     // console.log('term id and program id');
     var termId = ret.finalData?.campus[0]?.program[0]?.term[0]?.termId;
