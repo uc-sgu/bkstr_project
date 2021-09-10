@@ -1,20 +1,28 @@
 import fetch from 'node-fetch';
 import * as fs from 'fs';
+
 const storeNames = ["academyofourladypeacestore","acadiastore","adelphistore"];
+
+
 storeNames.forEach(function(strName,index){
     var storeName = strName; 
     var store_id = getStore(strName);
+    var J = 0;
     store_id.then(function(strid){
+	wait(2000);   
         var strId = strid.storeId;
         // get termId and programId
         var term_id = getTerm(strId);
         term_id.then(async function(termVal){
+	    wait(1500);   
             var termId = termVal[0];
             var programId = termVal[1];
             console.log(strId,termId,programId); 
             var department = getDaprtment(strId,termId);
             await department.then((value) => {
                 var dep = value.finalDDCSData.division[0].department;
+		 // save dep array in json filename will be bkstr_'+storeName+'_'+storeId+'_'+termId+'_department.json',data
+		wait(3000); 
                 var fullData = [];
                 var i = 0;
                 var j = 0;
@@ -33,6 +41,8 @@ storeNames.forEach(function(strName,index){
                                 fullData.push(course);
                                 i++;
                             }else{
+				// Create a function 
+				J++;
                                 // return;
                                 try{
                                     console.log("10-data of department,course and section send to get course and book details.");
@@ -44,14 +54,14 @@ storeNames.forEach(function(strName,index){
                                         console.log(value);
                                         j++;
                                         var data = JSON.stringify(value);
-                                        fs.writeFile('./bkstr/bkstr_'+storeName+'_'+termId+'_'+depName+'_'+courseName+'.json',data, function (err) {
+                                        fs.writeFile('./bkstr/bkstr_'+storeName+'_'+termId+'_'+depName+'_'+courseName+'_'+J+'.json',data, function (err) {
                                             if (err) throw err;
                                             console.log('Saved!');
                                         });
                                     })
-                                    var ran = Math.random()*(3 - 1 + 1) + 1;
+                                    var ran = (Math.random()*12) + 3;
                                     console.log("waiting for:",ran," seconds");
-                                    // wait(ran*1000);
+                                    wait(ran*1000);
                                     i=0;
                                     fullData = [];
                                     // console.log("hello");
@@ -61,7 +71,10 @@ storeNames.forEach(function(strName,index){
                             }
             			})
             		})
+			//
             	});
+		    
+		    // After for loop  check if i > 0 then you have to call getCourses for remianing course data and save it this is why i asked you to creat function under try  
             });
         })
     })
