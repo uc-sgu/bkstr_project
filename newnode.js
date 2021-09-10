@@ -22,19 +22,18 @@ storeNames.forEach(function(strName,index){
             var courseName;
             await department.then((value) => {
                 var dep = value.finalDDCSData.division[0].department;
-		        // save dep array in json filename will be bkstr_'+storeName+'_'+storeId+'_'+termId+'_department.json',data
+		    // save dep array in json filename will be bkstr_'+storeName+'_'+storeId+'_'+termId+'_department.json',data
+		    var depFile = JSON.stringify(dep);
+                    fs.writeFile('./bkstr_deps/bkstr_'+storeName+'_'+strId+'_'+termId+'_department.json',depFile, function (err) {
+                        if (err) throw err;
+                        console.log('Saved!');
+                    });
 		        wait(300); 
                 var fullData = [];
                 var i = 0;
                 var j = 0;
             	dep.forEach((val,index) => {
-                    depName = val.depName;
-                    var depFile = JSON.stringify(val);
-                    fs.writeFile('./bkstr_deps/bkstr_'+storeName+'_'+strId+'_'+termId+'_'+depName+'.json',depFile, function (err) {
-                        if (err) throw err;
-                        console.log('Saved!');
-                    });
-            		val.course.forEach((val2,index2)=>{
+                  	val.course.forEach((val2,index2)=>{
             			courseName = val2.courseName;
             			val2.section.forEach((val3,index3)=>{
             				let section = val3.sectionName;
