@@ -51,7 +51,7 @@ storeNames.forEach(function(strName,index){
                                     })
                                     var ran = Math.random()*(3 - 1 + 1) + 1;
                                     console.log("waiting for:",ran," seconds");
-                                    // wait(ran*1000);
+                                    wait(ran*1000);
                                     i=0;
                                     fullData = [];
                                     // console.log("hello");
@@ -149,6 +149,6 @@ function wait(ms){
    }
 }
 
-function timeout(ms) {
-    return new Promise(res => setTimeout(res, ms));
-}
+// function timeout(ms) {
+//     return new Promise(res => setTimeout(res, ms));
+// }
